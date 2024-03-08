@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Transaction</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Add Transaction</h1>
+    <form id="addTransactionForm"> 
+        <div class="form-group">
+            <h3>From</h3>
+            <label for="fromAccountNumber">Account Number:</label>
+            <input type="text" id="fromAccountNumber" name="fromAccountNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="fromPersonName">From Person Details:</label>
+            <div type="text" id="fromPersonName" name="fromPersonName" />
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" min="0" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <h3>To</h3>
+            <label for="toAccountNumber">Account Number:</label>
+            <input type="text" id="toAccountNumber" name="toAccountNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="toPersonName">To Person Details:</label>
+            <div type="text" id="toPersonName" name="toPersonName" />
+        </div>
+        <br>
+        <button type="submit">Transfer</button>
+    </form>
+    <div id="transactionList"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
