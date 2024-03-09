@@ -64,7 +64,7 @@ public class PersonService implements CrudService<Person> {
         }
     }
 
-    public Optional<Person> findByAccountId(String accountId) {
-        return personDao.findByAccountId(accountId);
+    public Optional<Person> findByAccountNumber(String accountId) {
+        return personDao.findByAccountNumber(accountId);
     }
 }

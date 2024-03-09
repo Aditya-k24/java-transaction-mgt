@@ -20,7 +20,7 @@ public class PersonDao implements CrudDao<Person> {
                 ps.setString(1, person.getPersonId());
                 ps.setString(2, person.getName());
                 ps.setInt(4, person.getBalance());
-                ps.setString(5, person.getAccountId());
+                ps.setString(5, person.getAccountNumber());
                 ps.execute();
             }
         } catch (SQLException e) {
@@ -50,7 +50,7 @@ public class PersonDao implements CrudDao<Person> {
             try (PreparedStatement ps = c.prepareStatement(sql)) {
                 ps.setString(1, person.getName());
                 ps.setInt(3, person.getBalance());
-                ps.setString(4, person.getAccountId());
+                ps.setString(4, person.getAccountNumber());
                 ps.setString(5, person.getPersonId());
                 if (1 != ps.executeUpdate()) {
                     throw new DaoException(("cannot update person" + person.getPersonId() + "; record not found"));
@@ -122,7 +122,7 @@ public class PersonDao implements CrudDao<Person> {
         return list;
     }
 
-	public Optional<Person> findByAccountId(String accountId) {
+	public Optional<Person> findByAccountNumber(String accountId) {
         try (Connection c = Database.getConnection()) {
             String sql = "select * from person where account_id = ?";
             try (PreparedStatement ps = c.prepareStatement(sql)) {

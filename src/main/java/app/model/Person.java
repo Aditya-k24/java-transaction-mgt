@@ -5,18 +5,18 @@ public class Person {
     private String personId;
     private String name;
     private int balance;
-    private String accountId; // Changed from companyId
+    private String accountNumber; // Changed from companyId
 
     public Person() {
 
     }
 
-    public Person(String personId, String name, int balance, String accountId) {
+    public Person(String personId, String name, int balance, String accountNumber) {
         super();
         this.personId = personId;
         this.name = name;
         this.balance = balance;
-        this.accountId = accountId;
+        this.accountNumber = accountNumber;
     }
 
     public String getPersonId() {
@@ -35,12 +35,12 @@ public class Person {
         this.name = name;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public int getBalance() {
@@ -54,6 +54,6 @@ public class Person {
     @Override
     public String toString() {
         return "Person [personId=" + personId + ", name=" + name + ", balance=" + balance
-                + ", accountId=" + accountId + "]"; // Changed from companyId
+                + ", accountNumber=" + accountNumber + "]"; // Changed from companyId
     }
 }

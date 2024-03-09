@@ -8,21 +8,21 @@ public class MoneyTransfer {
     private Timestamp createdTime;
     private String fromPersonId;
     private String toPersonId;
-    private String fromAccountId; // New attribute
-    private String toAccountId;   // New attribute
+    private String fromAccountNumber; // New attribute
+    private String toAccountNumber;   // New attribute
     private int amount;
     private String purpose;
     private Timestamp transferTime;
     private String status;
     private String statusDetails;
 
-    public MoneyTransfer(String moneyTransferId, String fromPersonId, String toPersonId, String fromAccountId, String toAccountId, int amount,
+    public MoneyTransfer(String moneyTransferId, String fromPersonId, String toPersonId, String fromAccountNumber, String toAccountNumber, int amount,
             String purpose) {
         this.moneyTransferId = moneyTransferId;
         this.fromPersonId = fromPersonId;
         this.toPersonId = toPersonId;
-        this.fromAccountId = fromAccountId; // Initialize fromAccountId
-        this.toAccountId = toAccountId;     // Initialize toAccountId
+        this.fromAccountNumber = fromAccountNumber; // Initialize fromAccountNumber
+        this.toAccountNumber = toAccountNumber;     // Initialize toAccountNumber
         this.amount = amount;
         this.purpose = purpose;
     }
@@ -71,20 +71,20 @@ public class MoneyTransfer {
         this.toPersonId = toPersonId;
     }
 
-    public String getFromAccountId() {
-        return fromAccountId;
+    public String getFromAccountNumber() {
+        return fromAccountNumber;
     }
 
-    public void setFromAccountId(String fromAccountId) {
-        this.fromAccountId = fromAccountId;
+    public void setFromAccountNumber(String fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
     }
 
-    public String getToAccountId() {
-        return toAccountId;
+    public String getToAccountNumber() {
+        return toAccountNumber;
     }
 
-    public void setToAccountId(String toAccountId) {
-        this.toAccountId = toAccountId;
+    public void setToAccountNumber(String toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
     }
 
     public int getAmount() {

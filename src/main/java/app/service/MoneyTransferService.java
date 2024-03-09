@@ -17,15 +17,15 @@ public class MoneyTransferService implements CrudService<MoneyTransfer> {
     private MoneyTransferDao dao = new MoneyTransferDao();
 
     public void transfer(String moneyTransferId, Timestamp createdTime, String fromPersonId, String toPersonId,
-                        String fromAccountId, String toAccountId, int amount, String purpose)
+                        String fromAccountNumber, String toAccountNumber, int amount, String purpose)
             throws ServiceException {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setMoneyTransferId(moneyTransferId);
         moneyTransfer.setCreatedTime(createdTime);
         moneyTransfer.setFromPersonId(fromPersonId);
         moneyTransfer.setToPersonId(toPersonId);
-        moneyTransfer.setFromAccountId(fromAccountId); // Set fromAccountId
-        moneyTransfer.setToAccountId(toAccountId); // Set toAccountId
+        moneyTransfer.setFromAccountNumber(fromAccountNumber); // Set fromAccountNumber
+        moneyTransfer.setToAccountNumber(toAccountNumber); // Set toAccountNumber
         moneyTransfer.setAmount(amount);
         moneyTransfer.setPurpose(purpose);
         moneyTransfer.setStatus("SUBMITTED");
@@ -37,8 +37,8 @@ public class MoneyTransferService implements CrudService<MoneyTransfer> {
     public void execute(MoneyTransfer moneyTransfer) throws ServiceException {
         Person from, to;
         try {
-            from = validateAccountId(moneyTransfer.getFromAccountId(), "From Account ID");
-            to = validateAccountId(moneyTransfer.getToAccountId(), "To Account ID");
+            from = validateAccountNumber(moneyTransfer.getFromAccountNumber(), "From Account ID");
+            to = validateAccountNumber(moneyTransfer.getToAccountNumber(), "To Account ID");
             validateBalance(moneyTransfer, from);
         } catch (ValidationException e) {
             moneyTransfer.setStatus("ERROR");
@@ -84,10 +84,10 @@ public class MoneyTransferService implements CrudService<MoneyTransfer> {
         return personOptional.get();
     }
 
-    private Person validateAccountId(String accountId, String fieldName) throws ValidationException {
-        Optional<Person> personOptional = personService.findByAccountId(accountId);
+    private Person validateAccountNumber(String accountNumber, String fieldName) throws ValidationException {
+        Optional<Person> personOptional = personService.findByAccountNumber(accountNumber);
         if (personOptional.isEmpty()) {
-            throw new ValidationException("Invalid " + fieldName + " " + accountId);
+            throw new ValidationException("Invalid " + fieldName + " " + accountNumber);
         }
         return personOptional.get();
     }
@@ -100,8 +100,9 @@ public class MoneyTransferService implements CrudService<MoneyTransfer> {
 
     @Override
     public void add(MoneyTransfer moneyTransfer) throws ServiceException {
-        validate(moneyTransfer);
+       // validate(moneyTransfer);
         try {
+	        System.out.println("Service");
             dao.add(moneyTransfer);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);

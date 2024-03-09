@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/transactions')
         .then(response => {
             if (!response.ok) {
+				console.log('Fetched transactions successfully:', response);
+
                 throw new Error('Failed to fetch transactions');
             }
             return response.json();
         })
         .then(data => {
+			console.log('Fetched transactions :', data);
+
             const transactionList = document.getElementById('transactionList');
             transactionList.innerHTML = ''; 
             data.forEach(transaction => {
@@ -16,12 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 div.textContent = `Account Number: ${transaction.fromAccountNumber},From Person Name: ${transaction.fromPersonName}, Amount: ${transaction.amount}`;
                 transactionList.appendChild(div);
                 div.addEventListener("click", async () => {
-                    let p = await fetch(`/transactions/${transaction.id}`).then(res => res.json());
+                    let p = await fetch(`/api/transactions/${transaction.id}`).then(res => res.json());
                     alert(JSON.stringify(p));
                 })
             });
         })
         .then(data => {
+			console.log('Fetched :', data);
+
             const transactionList = document.getElementById('transactionList');
             transactionList.innerHTML = ''; 
             data.forEach(transaction => {
@@ -29,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 div.textContent = `Account Number: ${transaction.toAccountNumber},From Person Name: ${transaction.toPersonName}`;
                 transactionList.appendChild(div);
                 div.addEventListener("click", async () => {
-                    let p = await fetch(`/transactions/${transaction.id}`).then(res => res.json());
+                    let p = await fetch(`/api/transactions/${transaction.id}`).then(res => res.json());
                     alert(JSON.stringify(p));
                 })
             });
@@ -97,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addButton.addEventListener('click', function(event) {
         event.preventDefault();
         const fromAccountNumber = document.getElementById('fromAccountNumber').value;
-       // const fromPersonName = document.getElementById('fromPersonName').value;
+       // const fromPersonName = document.getElementById('fromPersonId').value;
         const toAccountNumber = document.getElementById('toAccountNumber').value;
        // const toPersonName = document.getElementById('toPersonName').value;
         const amount = parseFloat(document.getElementById('amount').value);
@@ -106,13 +112,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function addTransaction(transactionData) {
-        fetch('/transaction', {
+        fetch('/api/transactions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(transactionData),
         })
+        .then(data => {
+			console.log(JSON.stringify(transactionData))
+		})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to add transaction: ' + response.statusText);

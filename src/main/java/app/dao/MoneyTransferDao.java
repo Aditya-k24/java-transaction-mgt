@@ -15,22 +15,27 @@ public class MoneyTransferDao implements CrudDao<MoneyTransfer> {
 	@Override
 	public void add(MoneyTransfer moneyTransfer) throws DaoException {
 		try (Connection c = Database.getConnection()) {
-			String sql = "insert into money_transfer("
-					+ "money_transfer_id, from_person_id, to_person_id, amount, purpose, "
-					+ "status, status_details, created_time, transfer_time" + ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			System.out.println("Dao");
+
+			String sql = "INSERT INTO money_transfer (money_transfer_id, from_person_id, to_person_id, from_account_id, to_account_id, amount, purpose, status, status_details, created_time, transfer_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 			try (PreparedStatement ps = c.prepareStatement(sql)) {
 				ps.setString(1, moneyTransfer.getMoneyTransferId());
 				ps.setString(2, moneyTransfer.getFromPersonId());
 				ps.setString(3, moneyTransfer.getToPersonId());
-				ps.setInt(4, moneyTransfer.getAmount());
-				ps.setString(5, moneyTransfer.getPurpose());
-				ps.setString(6, moneyTransfer.getStatus());
-				ps.setString(7, moneyTransfer.getStatusDetails());
-				ps.setTimestamp(8, moneyTransfer.getCreatedTime());
-				ps.setTimestamp(9, moneyTransfer.getTransferTime());
+				ps.setString(4, moneyTransfer.getToAccountNumber());
+				ps.setString(5, moneyTransfer.getFromAccountNumber());
+				ps.setInt(6, moneyTransfer.getAmount());
+				ps.setString(7, moneyTransfer.getPurpose());
+				ps.setString(8, moneyTransfer.getStatus());
+				ps.setString(9, moneyTransfer.getStatusDetails());
+				ps.setTimestamp(10, moneyTransfer.getCreatedTime());
+				ps.setTimestamp(11, moneyTransfer.getTransferTime());
 				ps.executeUpdate();
 			}
 		} catch (SQLException e) {
+			System.out.println("Dao error");
+
 			throw new DaoException("cannot add money transfer: " + e.getMessage(), e);
 		}
 	}
@@ -152,10 +157,7 @@ public class MoneyTransferDao implements CrudDao<MoneyTransfer> {
 	}
 
 	public List<MoneyTransfer> findAllByStatus(String status, int count) {
-		String sql = "select * "
-				+ "from money_transfer "
-				+ "where status = ? "
-				+ "order by created_time "
+		String sql = "select * " + "from money_transfer " + "where status = ? " + "order by created_time "
 				+ "fetch first 10 rows only";
 		try (Connection c = Database.getConnection()) {
 			try (PreparedStatement ps = c.prepareStatement(sql)) {

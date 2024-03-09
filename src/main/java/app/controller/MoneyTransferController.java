@@ -1,7 +1,7 @@
 package app.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+//import java.util.LinkedHashMap;
+//import java.util.Map;
 import java.util.Optional;
 
 import javax.ws.rs.Consumes;
@@ -16,13 +16,11 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 
 import app.model.MoneyTransfer;
-import app.model.Person;
-import app.model.PersonAccount;
+
 import app.service.MoneyTransferService;
-import app.service.PersonService;
 import app.service.ServiceException;
 
-@Path("/transaction")
+@Path("/transactions")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
@@ -34,10 +32,11 @@ public class MoneyTransferController {
 	@Produces("application/json")
 	public Response addTransaction(String json) {
 		MoneyTransfer moneyTransfer = new Gson().fromJson(json, MoneyTransfer.class);
-	    System.out.println("Amount received: " + moneyTransfer.getAmount());
+//	    System.out.println("Amount received: " + moneyTransfer.getAmount());
+//	    System.out.println("Amount from and to" + moneyTransfer.getFromAccountNumber() + moneyTransfer.getToAccountNumber());
 
 		try {
-			moneyTransfer.setFromAccountId("p" + System.currentTimeMillis());
+			moneyTransfer.setFromAccountNumber("p" + System.currentTimeMillis());
 			moneyTransferService.add(moneyTransfer);
 	        System.out.println("Transaction added successfully: " + moneyTransfer);
 
@@ -49,20 +48,16 @@ public class MoneyTransferController {
 
 	@GET
 	@Path("/{id}")
-	@Produces("application/json")
-	public Response getAccountByNumber(@PathParam("id") String id) {
-		Optional<PersonAccount> personAccountOptional = personAccountService.findById(id);
-		if (personAccountOptional.isPresent()) {
-			PersonService personService = new PersonService();
-			Optional<Person> personOptional = personService.findById(personAccountOptional.get().getPersonId());
-			Map<String,Object> result = new LinkedHashMap<>();
-			result.put("personAccount", personAccountOptional.get());
-			result.put("person", personOptional.get());
-			return Response.status(Response.Status.OK).entity(new Gson().toJson(result)).build();
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTransactionById(@PathParam("id") String id) throws ServiceException {
+	    Optional<MoneyTransfer> moneyTransferOptional = moneyTransferService.findById(id);
+		if (moneyTransferOptional.isPresent()) {
+		    return Response.status(Response.Status.OK).entity(moneyTransferOptional.get()).build();
 		} else {
-			return Response.status(Response.Status.NOT_FOUND).entity("PersonAccount not found").build();
+		    return Response.status(Response.Status.NOT_FOUND).entity("MoneyTransfer not found").build();
 		}
 	}
+
 
 	@GET
 	@Produces("application/json")
